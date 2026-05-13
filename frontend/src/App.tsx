@@ -104,15 +104,51 @@ function App() {
 
       <h2>Total: ${total}</h2>
 
-      <button
-        style={{
-          marginTop: 20,
-          padding: 15,
-          fontSize: 20,
-        }}
-      >
-        FACTURAR
-      </button>
+  <button
+  disabled={items.length === 0}
+  style={{
+    marginTop: 20,
+    padding: 15,
+    fontSize: 20,
+    backgroundColor: items.length === 0 ? "gray" : "green",
+    color: "white",
+    cursor: items.length === 0 ? "not-allowed" : "pointer",
+  }}
+  onClick={async () => {
+    console.log("CLICK FACTURAR");
+
+    if (items.length === 0) {
+      alert("No hay items para facturar");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/facturar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: items,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log("Respuesta del backend:", data);
+
+      alert("Factura enviada correctamente");
+
+      setItems([]); // limpiar ticket
+
+    } catch (error) {
+      console.error("ERROR COMPLETO:", error);
+      alert("Error al facturar, ver consola");
+    }
+  }}
+>
+  FACTURAR
+</button>
     </div>
   );
 }

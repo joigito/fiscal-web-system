@@ -10,18 +10,17 @@ app.get("/", (req, res) => {
   res.send("Backend fiscal funcionando");
 });
 
-app.post("/facturar", (req, res) => {
+app.post("/facturar", (req: any, res: any) => {
   const items = req.body.items;
 
-  console.log("FACTURA RECIBIDA");
-
-  console.log(items);
+  facturar(items); // 👈 ACÁ ESTÁ LA MAGIA
 
   res.json({
     ok: true,
     mensaje: "Factura procesada",
   });
 });
+
 
 const PORT = 3000;
 
